@@ -175,4 +175,6 @@ cython_debug/
 
 database.ini
 /main_test.py
+/data/employers_sample.json
+/data/vacancies_info.json
 /data/employers_info.json
