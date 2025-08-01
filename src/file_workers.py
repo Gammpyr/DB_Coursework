@@ -4,16 +4,21 @@ from pathlib import Path
 
 def read_file(filename: str = 'employers') -> list:
     """
-    Читает файл employers.json (по умолчанию) и возвращает id работодателей из него в виде списка
+    Читает JSON файл
     """
-    filepath = Path('../data/') / Path(f'{filename}.json')
+    filepath = Path('./data/') / Path(f'{filename}.json')
+
+    result = []
     with open(filepath, 'r', encoding='utf-8') as file:
-        data = json.load(file).values()
+        data = json.load(file)
+        for e in data:
+            result.append(e)
 
-    return list(data)
+    return result
 
 
-def save_to_file(data, filename='employers_info'):
-    filepath = Path('../data/') / Path(f'{filename}.json')
+def save_to_file(data, filename: str = 'employers_info') -> None:
+    """Сохраняет информацию в JSON файл"""
+    filepath = Path('./data/') / Path(f'{filename}.json')
     with open(filepath, 'w', encoding='utf-8') as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
