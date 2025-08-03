@@ -1,5 +1,7 @@
 import requests
 
+from src.hh_models import Employer, Vacancy
+
 
 def get_employers_info(data: list) -> list:
     """
@@ -11,13 +13,13 @@ def get_employers_info(data: list) -> list:
         response = requests.get(f'https://api.hh.ru/employers/{value}')
         response.raise_for_status()
         response = response.json()
-        result.append({
-            'id': response['id'],
-            'name': response['name'],
-            'alternate_url': response['alternate_url'],
-            'vacancies_url': response['vacancies_url'],
-            'open_vacancies': response['open_vacancies'],
-        })
+        result.append(
+            Employer(response['id'],
+                     response['name'],
+                     response['alternate_url'],
+                     response['vacancies_url'],
+                     response['open_vacancies'])
+        )
 
     return result
 
@@ -28,32 +30,30 @@ def get_vacancies(emps_info: list):
 
     for emp in emps_info:
         params = {'per_page': 100, 'page': 0}
-        emp["vacancies"] = []
-        emp_vacancy_url = emp["vacancies_url"]
-        print(f'Получаем вакансии от: {emp['name']}')
+
+        print(f'Получаем вакансии от: {emp.name}')
         while True:
-            response = requests.get(f'{emp_vacancy_url}', params)
+            response = requests.get(f'{emp.vacancies_url}', params)
             response.raise_for_status()
             response = response.json()
 
             items = []
             for item in response['items']:
-                items.append({
-                    "id": item["id"],
-                    "name": item["name"],
-                    "salary": item["salary"],
-                    "url": item["alternate_url"],
-                    "employer": item["employer"]["name"],
-                    "snippet": item["snippet"],
-                    "experience": item["experience"]["name"]}
+                items.append(
+                    Vacancy(
+                        item["id"],
+                        item["name"],
+                        item["salary"],
+                        item["alternate_url"],
+                        item["employer"]["name"],
+                        item["snippet"],
+                        item["experience"]["name"]
+                    )
                 )
 
-            emp["vacancies"].extend(items)
+            emp.vacancies.extend(items)
 
             if params['page'] == response['pages'] - 1:
-                result.append({emp['name']: emp})
                 break
             else:
                 params['page'] += 1
-
-    return result
