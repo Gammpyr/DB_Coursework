@@ -11,9 +11,8 @@ data = read_file('employers')  # Читаем файл с ID работодат�
 # employers_info = get_employers_info([{"Компания 05.ру": 1150295}])
 employers_info = get_employers_info(data)  # Получаем информацию о работодателях
 
-vacancies = get_vacancies(employers_info)  # Получаем список вакансий
+get_vacancies(employers_info)  # Получаем список вакансий
 
-save_to_file(vacancies, 'vacancies_info')  # Сохраняем полученные вакансии в файл
 
 
 # def main():
