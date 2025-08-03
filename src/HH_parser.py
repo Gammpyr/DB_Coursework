@@ -5,7 +5,7 @@ from src.hh_models import Employer, Vacancy
 
 def get_employers_info(data: list) -> list:
     """
-    Принимает словарь с работодателями и возвращает информацию о них
+    Принимает словарь с работодателями [{Название:ID}] и возвращает информацию о них
     """
     result = []
 
@@ -21,13 +21,15 @@ def get_employers_info(data: list) -> list:
                      response['open_vacancies'])
         )
 
+    get_vacancies(result)
+
     return result
 
 
-def get_vacancies(emps_info: list):
-    """Принимает список словарей с информацией о работодателях и возвращает список вакансий"""
-    result = []
-
+def get_vacancies(emps_info: list[Employer]):
+    """
+    Принимает список словарей объектами Employer и присваивает каждому объекту список его вакансий
+    """
     for emp in emps_info:
         params = {'per_page': 100, 'page': 0}
 
@@ -45,8 +47,10 @@ def get_vacancies(emps_info: list):
                         item["name"],
                         item["salary"],
                         item["alternate_url"],
+                        item["employer"]["id"],
                         item["employer"]["name"],
-                        item["snippet"],
+                        item["snippet"]['requirement'],
+                        item["snippet"]['responsibility'],
                         item["experience"]["name"]
                     )
                 )
