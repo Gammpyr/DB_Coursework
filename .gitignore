@@ -172,3 +172,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+database.ini
+/main_test.py
+/data/employers_sample.json
+/data/vacancies_info.json
+/data/employers_info.json
