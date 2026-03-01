@@ -19,11 +19,11 @@ def main() -> None:
     fill_tables(db_name, params, employers_info)  # заполняем таблицы данными
 
     hh_employer = DBManager(db_name, **params)  # Создаём класс для работы с базой данных
-    companies_and_vacancies_count = hh_employer.get_companies_and_vacancies_count()
-    all_vacancies = hh_employer.get_all_vacancies()
-    avg_salary = hh_employer.get_avg_salary()
-    vacancies_with_higher_salary = hh_employer.get_vacancies_with_higher_salary()
-    vacancies_with_keyword = hh_employer.get_vacancies_with_keyword("Python")
+    companies_and_vacancies_count = hh_employer.get_companies_and_vacancies_count() # получаем количество компаний и вакансий
+    all_vacancies = hh_employer.get_all_vacancies() # получаем все вакансии
+    avg_salary = hh_employer.get_avg_salary() # получаем среднюю зарплату
+    vacancies_with_higher_salary = hh_employer.get_vacancies_with_higher_salary() # получаем вакансии с зарплатой выше средней
+    vacancies_with_keyword = hh_employer.get_vacancies_with_keyword("Python") # получаем вакансии с ключевым словом
 
 
 if __name__ == "__main__":
