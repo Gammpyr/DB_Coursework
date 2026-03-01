@@ -44,23 +44,34 @@ def fill_tables(db_name: str, params: dict, employers_info: list) -> None:
         for employer in employers_info:
             cur.execute(
                 "INSERT INTO employers VALUES (%s, %s, %s, %s, %s)",
-                (employer.id, employer.name, employer.alternate_url, employer.vacancies_url, employer.open_vacancies),
+                (
+                    employer.id,
+                    employer.name,
+                    employer.alternate_url,
+                    employer.vacancies_url,
+                    employer.open_vacancies
+                ),
             )
 
-            vacancies = [
-                (
-                    vacancy.id,
-                    vacancy.name,
-                    vacancy.salary["from"] if vacancy.salary else None,
-                    vacancy.salary["to"] if vacancy.salary else None,
-                    vacancy.url,
-                    vacancy.employer_id,
-                    vacancy.requirements,
-                    vacancy.responsibility,
-                    vacancy.experience,
-                )
-                for vacancy in employer.vacancies
-            ]
+            seen_vacancy_ids = set()
+            vacancies = []
+
+            for vacancy in employer.vacancies:
+                if vacancy.id not in seen_vacancy_ids:
+                    seen_vacancy_ids.add(vacancy.id)
+                    vacancies.append(
+                        (
+                            vacancy.id,
+                            vacancy.name,
+                            vacancy.salary["from"] if vacancy.salary and vacancy.salary["from"] else None,
+                            vacancy.salary["to"] if vacancy.salary and vacancy.salary["to"] else None,
+                            vacancy.url,
+                            vacancy.employer_id,
+                            vacancy.requirements,
+                            vacancy.responsibility,
+                            vacancy.experience,
+                        )
+                    )
 
             cur.executemany("INSERT INTO vacancies VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", vacancies)
 
