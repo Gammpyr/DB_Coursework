@@ -24,6 +24,7 @@ def main() -> None:
     avg_salary = hh_employer.get_avg_salary() # получаем среднюю зарплату
     vacancies_with_higher_salary = hh_employer.get_vacancies_with_higher_salary() # получаем вакансии с зарплатой выше средней
     vacancies_with_keyword = hh_employer.get_vacancies_with_keyword("Python") # получаем вакансии с ключевым словом
+    print(f'Сохранено в базе данных {db_name}')
 
 
 if __name__ == "__main__":
